@@ -24,6 +24,10 @@ void printNum(digit * num);
 void printRecursive(digit * num);
 void subtractCarry(digit * head, digit * prev);
 digit * clearLeadingZeros(digit * num);
+int addCarry(digit * left, digit * right, int carry);
+digit * addNode(int num, digit * head);
+
+
 
 //-----------------PROVIDED BY INSTRUCTOR-----------------
 int main() {
@@ -33,13 +37,13 @@ int main() {
     ofstream outFile ("output.txt");
     ifstream inFile ("largeNumbers.txt");
     
-    while (!inFile.eof()){
+    //while (!inFile.eof()){
         left  = writeNum(inFile);
         right = writeNum(inFile);
         if (left == nullptr || right == nullptr) {
             // check after two reads if we didn't get numbers
             // in case of one extra newline at end of file
-            break;
+            //break;
         }
         op = getOperator(inFile);
 
@@ -65,7 +69,7 @@ int main() {
         left = nullptr;
         right = nullptr;
         result = nullptr;
-    }
+    //}
     
     outFile.close();
     inFile.close();
@@ -99,7 +103,7 @@ int digcmp(digit * left, digit * right){
         // left number is longer and therefore larger
         result= 1;
     }
-    return res;
+    return result;
 }
 
 //-----------------PROVIDED BY INSTRUCTOR-----------------
@@ -178,9 +182,58 @@ void deleteNum(digit * num){
 }
 
 // TODO: Implement function to add 2 numbers stored in 2 linked lists
-digit * addNumbers(digit * left, digit * right){ // this function makes numbers in order.
-    return nullptr;
+
+
+digit * addNumbers(digit * left, digit * right){
+  int result, carryOver=0;
+  digit * sum=nullptr;
+ 
+  while(left!=NULL && right!=NULL)
+  {
+    if(((left->data)+(right->data))>9)
+    {
+      result=left->data+right->data+carryOver;
+      //result=result-10;
+      carryOver=(left->data+right->data)/10;
+      digit * addNode=new digit;
+  	addNode->data=result;
+  	addNode->next=sum;
+  	sum=addNode;
+    }
+    else
+    {
+      result=left->data+right->data+carryOver;
+      digit * addNode=new digit;
+  	addNode->data=result;
+  	addNode->next=sum;
+  	sum=addNode;
+      carryOver=0;
+    }
+    left=left->next;
+    right=right->next;
+  }
+ 
+  if(carryOver==0)
+  {
+    return sum;
+    cout << sum << endl;
+  }
+  else
+  {
+    digit * addNode=new digit;
+  	addNode->data=carryOver;
+  	addNode->next=sum;
+  	sum=addNode;
+    return sum;
+  }
+
+  
 }
+ 
+
+
+
+
 
 //-----------------PROVIDED BY INSTRUCTOR-----------------
 void subtractCarry(digit * head, digit * prev){
