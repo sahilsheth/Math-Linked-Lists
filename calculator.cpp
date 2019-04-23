@@ -193,7 +193,7 @@ digit * addNumbers(digit * left, digit * right){
     if(((left->data)+(right->data))>9)
     {
       result=left->data+right->data+carryOver;
-      //result=result-10;
+      result=result-10;
       carryOver=(left->data+right->data)/10;
       digit * addNode=new digit;
   	addNode->data=result;
